@@ -4,7 +4,9 @@ import com.archi.books.Entity.Book;
 import com.archi.books.Entity.BookEntity;
 import com.archi.books.repositories.BookRepository;
 import com.archi.books.service.BookService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
@@ -46,7 +49,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBookById(String isbn) {
-        bookRepository.deleteById(isbn);
+       try {
+           bookRepository.deleteById(isbn);
+       }catch (final EmptyResultDataAccessException ex){
+           log.debug("Attempted to delete non-existing book",ex);
+       }
+
     }
 
     private BookEntity booktobookentity(Book book) {
