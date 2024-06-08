@@ -100,9 +100,18 @@ public class BookControllerIT {
 
     @Test
     public void testthathttp204isreturnedwhenbookdoesntexist() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/books/213213213"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/books/213231123"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
     }
 
+    @Test
+    public void testthathttp204isreturnedwhenexistingbookisdeleted() throws Exception {
+        final Book book = Testdata.testbook();
+        bookService.save(book);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/books/" + book.getIsbn()))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+    }
 }

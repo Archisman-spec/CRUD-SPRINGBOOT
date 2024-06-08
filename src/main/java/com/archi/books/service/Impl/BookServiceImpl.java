@@ -51,8 +51,10 @@ public class BookServiceImpl implements BookService {
     public void deleteBookById(String isbn) {
        try {
            bookRepository.deleteById(isbn);
-       }catch (final EmptyResultDataAccessException ex){
-           log.debug("Attempted to delete non-existing book",ex);
+
+       }
+       catch (final EmptyResultDataAccessException ex){
+           log.debug("Attempted to delete non-existing bOok",ex);
        }
 
     }
@@ -69,4 +71,5 @@ public class BookServiceImpl implements BookService {
                .title(book.getTitle())
                .author(book.getAuthor()).build();
     }
+
 }
