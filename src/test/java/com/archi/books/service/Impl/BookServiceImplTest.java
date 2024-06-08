@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.archi.books.Testdata.testbook;
+import static com.archi.books.Testdata.testbookentity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -22,16 +24,9 @@ public class BookServiceImplTest {
 
     @Test
     public void testthatbookisSaved(){
-        Book book = Book.builder()
-                .isbn("109325u0234").
-                author("Archi the rand").
-                title("randi chodne ki kitab").build();
+      final  Book book = testbook();
 
-        BookEntity bookie = BookEntity.builder()
-                .isbn("109325u0234").
-                author("Archi the rand").
-                title("randi chodne ki kitab").build();
-
+        BookEntity bookie = testbookentity();
 
         when(bookRepository.save(bookie)).thenReturn(bookie);
         final Book result =underTest.create(book);
