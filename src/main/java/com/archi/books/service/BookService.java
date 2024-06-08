@@ -9,9 +9,10 @@ public interface BookService {
 
     boolean isbookexists(Book book);
 
-    Book create(Book book);
+    Book save(Book book);
     Optional<Book> findById(String isbn);
     List<Book> listbooks();
 
+    void deleteBookById(String isbn);
 
 }

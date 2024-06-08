@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book create(final Book book) {
+    public Book save(final Book book) {
         final BookEntity bookEntity = booktobookentity(book);
         final BookEntity savedbook=bookRepository.save(bookEntity);
         return bookentitytobook(savedbook);
@@ -42,6 +42,11 @@ public class BookServiceImpl implements BookService {
     public List<Book> listbooks() {
        final List<BookEntity> foundbooks =bookRepository.findAll();
        return foundbooks.stream().map(book-> bookentitytobook(book)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteBookById(String isbn) {
+        bookRepository.deleteById(isbn);
     }
 
     private BookEntity booktobookentity(Book book) {

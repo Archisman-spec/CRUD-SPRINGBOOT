@@ -5,8 +5,6 @@ import com.archi.books.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,11 +20,15 @@ public class BookController {
     }
 
     @PutMapping(path = "/books/{isbn}")
-    public ResponseEntity<Book> createBook(@PathVariable final String isbn, @RequestBody final Book book) {
+    public ResponseEntity<Book> createUpdateBook(@PathVariable final String isbn, @RequestBody final Book book) {
         book.setIsbn(isbn);
-        final Book savedbook=bookService.create(book);
-        final ResponseEntity<Book> response =new ResponseEntity<Book>(savedbook ,HttpStatus.CREATED);
-        return response;
+        final boolean isbookexists=bookService.isbookexists(book);
+        final Book savedbook=bookService.save(book);
+        if(isbookexists){
+            return new ResponseEntity<Book>(savedbook,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Book>(savedbook, HttpStatus.CREATED);
+        }
     }
 
     @GetMapping(path = "/books/{isbn}")
