@@ -9,7 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+import java.util.Optional;
+
+@RestController
 public class BookController {
     private final BookService bookService;
 
@@ -24,6 +27,19 @@ public class BookController {
         final Book savedbook=bookService.create(book);
         final ResponseEntity<Book> response =new ResponseEntity<Book>(savedbook ,HttpStatus.CREATED);
         return response;
+    }
+
+    @GetMapping(path = "/books/{isbn}")
+    public ResponseEntity<Book> retrieveBook(@PathVariable final String isbn){
+        final Optional<Book> foundbook=bookService.findById(isbn);
+        return foundbook.map(book -> new ResponseEntity<Book>(book,HttpStatus.OK)).
+                orElse(new ResponseEntity<Book>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping(path = "/books")
+    public ResponseEntity<List<Book>> listbooks(){
+       return  new ResponseEntity<List<Book>>(bookService.listbooks(), HttpStatus.OK);
+
     }
 
 }

@@ -7,6 +7,10 @@ import com.archi.books.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
@@ -21,6 +25,18 @@ public class BookServiceImpl implements BookService {
         final BookEntity bookEntity = booktobookentity(book);
         final BookEntity savedbook=bookRepository.save(bookEntity);
         return bookentitytobook(savedbook);
+    }
+
+    @Override
+    public Optional<Book> findById(String isbn) {
+        final Optional<BookEntity> foundbook=bookRepository.findById(isbn);
+        return foundbook.map(book -> bookentitytobook(book) );
+    }
+
+    @Override
+    public List<Book> listbooks() {
+       final List<BookEntity> foundbooks =bookRepository.findAll();
+       return foundbooks.stream().map(book-> bookentitytobook(book)).collect(Collectors.toList());
     }
 
     private BookEntity booktobookentity(Book book) {
