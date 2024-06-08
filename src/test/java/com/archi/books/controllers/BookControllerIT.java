@@ -98,4 +98,11 @@ public class BookControllerIT {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].title").value(book.getTitle()));
     }
 
+    @Test
+    public void testthathttp204isreturnedwhenbookdoesntexist() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/books/213213213"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+    }
+
 }
